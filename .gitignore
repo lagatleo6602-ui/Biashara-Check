@@ -1,0 +1,21 @@
+.env
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+data/raw/*
+data/processed/*
+!data/**/.gitkeep
+ml/artifacts/
+instance/
+backups/
+# local databases, logs and editor folders
+*.db
+*.sqlite
+*.sqlite3
+*.log
+.venv/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

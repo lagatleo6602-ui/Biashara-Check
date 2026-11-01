@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biashara Check</title>
+<meta name="description" content="Check your business's risk of making a loss in the next 3 months.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230F3D2E'/%3E%3Crect x='5' y='10' width='3.2' height='9' rx='1' fill='%23fff'/%3E%3Crect x='10.4' y='5' width='3.2' height='14' rx='1' fill='%23fff'/%3E%3Crect x='15.8' y='12.5' width='3.2' height='6.5' rx='1' fill='%23F0B429'/%3E%3C/svg%3E">
+<link rel="preload" href="/static/fonts/bricolage-grotesque-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/static/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials">
+<link rel="apple-touch-icon" href="/static/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0F3D2E">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="/"><svg class="mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="24" height="24" rx="6" fill="#0F3D2E"/><rect x="5" y="10" width="3.2" height="9" rx="1" fill="#fff"/><rect x="10.4" y="5" width="3.2" height="14" rx="1" fill="#fff"/><rect x="15.8" y="12.5" width="3.2" height="6.5" rx="1" fill="#F0B429"/></svg><span>Biashara Check</span></a>
+    <nav class="nav" aria-label="Account">
+      <a class="nav-link" id="admin-link" href="/admin" hidden>Admin</a>
+      <a class="nav-link" href="/" aria-current="page">Dashboard</a>
+      <a class="nav-link" href="/how"><span class="wide-only">How it's calculated</span><span class="narrow-only">Method</span></a>
+      <button class="nav-link" id="tour-link" type="button"><span class="wide-only">Tour</span><span class="narrow-only">Help</span></button>
+      <a class="nav-link" href="/account">Account</a>
+      <button class="nav-link" id="logout" type="button">Log out</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <p class="loading" id="loading" role="status">Loading your figures…</p>
+
+  <!-- Admin with no businesses yet -->
+  <section id="onboard" class="onboard" hidden>
+    <h1>No businesses yet.</h1>
+    <p class="lede">Create a business account in the admin section, or ask an owner to sign up on the login page.</p>
+    <a class="btn primary" href="/admin">Go to admin</a>
+  </section>
+
+  <section id="dash" hidden>
+    <div class="dash-head">
+      <div>
+        <h1 id="dash-title"></h1>
+        <p class="sub" id="dash-sub"></p>
+        <a class="pro-pill" id="pro-pill" href="/account#pro" hidden></a>
+      </div>
+      <div class="dash-actions">
+        <label class="switch" hidden>
+          <span class="sr">Business</span>
+          <select id="business-select" aria-label="Choose business"></select>
+        </label>
+        <button class="btn ghost small" id="report-btn" type="button" hidden aria-haspopup="dialog"><span class="wide-only">Reports (PDF)</span><span class="narrow-only">Reports</span></button>
+        <button class="btn primary small" id="next-month-btn" type="button" hidden></button>
+      </div>
+    </div>
+
+    <dl class="stats kpis" id="stats" aria-label="Latest month at a glance"></dl>
+
+    <div class="horizon-bar" id="horizon-bar" hidden>
+      <span class="hb-label" id="hb-label">Look ahead</span>
+      <div class="hb-chips" role="radiogroup" aria-labelledby="hb-label" id="hb-chips"></div>
+      <label class="hb-more"><span class="sr">Choose any number of months, 1 to 12</span>
+        <select id="hb-select"></select></label>
+      <p class="hb-note" id="hb-note" role="status" hidden></p>
+    </div>
+    <article class="risk" id="risk" aria-live="polite" hidden></article>
+
+    <article class="card outlook" id="outlook" aria-labelledby="ol-h" hidden>
+      <h2 id="ol-h">The next 12 months, month by month</h2>
+      <p class="hint">Chance of at least one loss month by each month. Tap a month to look that far ahead.</p>
+      <ol class="ol-strip" id="ol-strip"></ol>
+      <p class="basis" id="ol-basis"></p>
+    </article>
+
+    <article class="card distress" id="distress" aria-labelledby="ds-h" hidden></article>
+
+    <form class="verify-note" id="verify-note" hidden novalidate>
+      <div>
+        <p><b>Confirm your email.</b> We sent a 6-digit code to <span id="verify-email"></span>.</p>
+        <p class="hint">It lets you reset your password yourself. Check your spam folder if you can't see it.</p>
+      </div>
+      <div class="verify-row">
+        <label class="sr" for="verify-code">6-digit code</label>
+        <input id="verify-code" inputmode="numeric" autocomplete="one-time-code" maxlength="7" placeholder="123456">
+        <button class="btn primary small" type="submit">Confirm</button>
+        <button class="link-btn" type="button" id="verify-resend">Send a new code</button>
+      </div>
+      <p class="msg" role="status"></p>
+    </form>
+    <form class="verify-note" id="phone-note" hidden novalidate>
+      <div>
+        <p><b>Confirm your mobile number.</b> We'll text a 6-digit code to <span id="phone-to"></span>.</p>
+        <p class="hint">Then you can reset your password by SMS too.</p>
+      </div>
+      <div class="verify-row">
+        <button class="btn primary small" type="button" id="phone-send">Text me a code</button>
+        <span id="phone-code-wrap" hidden class="verify-row">
+          <label class="sr" for="phone-code">6-digit code from the SMS</label>
+          <input id="phone-code" inputmode="numeric" autocomplete="one-time-code" maxlength="7" placeholder="123456">
+          <button class="btn primary small" type="submit">Confirm</button>
+        </span>
+        <button class="link-btn" type="button" id="phone-later">Later</button>
+      </div>
+      <p class="msg" role="status"></p>
+    </form>
+    <div class="verify-note" id="contact-note" hidden>
+      <p><b>Add your email and mobile number.</b> The study team needs them to confirm accounts, and you need them to reset your password.</p>
+      <a class="btn primary small" href="/account#contact">Add them now</a>
+    </div>
+
+    <div class="gap-note" id="gap-note" hidden>
+      <p id="gap-text"></p>
+      <button class="btn ghost small" id="gap-btn" type="button"></button>
+    </div>
+
+    <div class="feedback-nudge" id="feedback-nudge" hidden>
+      <p><b>How is Biashara Check working for you?</b> Rate it in 2 minutes: it helps the study.</p>
+      <a class="btn ghost small" href="/account#feedback">Give feedback</a>
+      <button class="link-btn" type="button" id="nudge-later">Not now</button>
+    </div>
+
+    <div class="grid">
+      <div class="col-main">
+        <!-- First visit: no figures yet -->
+        <article class="card start" id="start" hidden>
+          <h2>Start with your past months</h2>
+          <p>Add at least 3 months of sales and expenses to get your first risk check. 12 months gives the most reliable result.</p>
+          <div class="start-options">
+            <button class="start-opt" type="button" id="start-type">
+              <b>Type them in</b>
+              <span>One month at a time, using the form. Good if you keep a sales book.</span>
+            </button>
+            <button class="start-opt" type="button" id="start-upload">
+              <b>Upload from Excel</b>
+              <span>Many months at once, using our template. Good if your records are on a computer.</span>
+            </button>
+          </div>
+        </article>
+
+        <article class="card" id="chart-card" hidden>
+          <div class="card-head">
+            <h2 id="chart-title">Profit or loss each month</h2>
+            <p class="hint" id="chart-hint"></p>
+          </div>
+          <div class="chart-switch" role="radiogroup" aria-label="Choose a chart" id="chart-switch"></div>
+          <div class="chart-tools">
+            <div class="mode-switch" role="radiogroup" aria-label="Show as" id="mode-switch"></div>
+            <label class="period-pick"><span class="sr">Period</span>
+              <select id="chart-period" aria-label="Period">
+                <option value="6">Last 6 months</option>
+                <option value="12">Last 12 months</option>
+                <option value="0">All months</option>
+              </select>
+            </label>
+          </div>
+          <div id="chart" class="chart"></div>
+        </article>
+
+        <article class="card figures" id="figures-card" aria-labelledby="fg-h" hidden>
+          <div class="card-head row">
+            <h2 id="fg-h">Your business figures</h2>
+            <a class="hint" href="/how#figures">How they're calculated</a>
+          </div>
+          <p class="hint fg-sub" id="fg-sub"></p>
+          <div class="fg-statements" id="fg-statements"></div>
+          <div class="fg-checks" id="fg-checks"></div>
+          <h3 class="fg-h3">Every figure, with its formula</h3>
+          <p class="hint">Tap a figure to see how it's worked out with your own numbers.</p>
+          <ul class="fg-items" id="fg-items"></ul>
+          <button class="btn ghost small more" id="fg-all" type="button" hidden aria-controls="fg-items"></button>
+        </article>
+
+        <article class="card" id="records-card" hidden>
+          <div class="card-head row">
+            <h2>Your records</h2>
+            <span class="hint" id="record-count"></span>
+          </div>
+          <p class="hint table-hint">Spotted a mistake? Choose Edit on that month.</p>
+          <div class="table-wrap">
+            <table id="records">
+              <thead><tr>
+                <th scope="col">Month</th><th scope="col">Sales</th><th scope="col">Costs</th>
+                <th scope="col">Profit / loss</th><th scope="col"><span class="sr">Edit</span></th>
+              </tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <button class="btn ghost small more" id="show-all" type="button" hidden aria-controls="records"></button>
+        </article>
+      </div>
+
+      <aside class="col-side" id="entry">
+        <div class="card">
+          <div class="tabs" role="tablist" id="entry-tabs">
+            <button role="tab" id="tab-month" aria-selected="true" aria-controls="panel-month">Add a month</button>
+            <button role="tab" id="tab-csv" aria-selected="false" aria-controls="panel-csv" tabindex="-1">Upload CSV</button>
+            <button role="tab" id="tab-mpesa" aria-selected="false" aria-controls="panel-mpesa" tabindex="-1">M-Pesa <span class="pro-tag">Pro</span></button>
+          </div>
+
+          <form id="panel-month" role="tabpanel" aria-labelledby="tab-month" class="form" novalidate>
+            <div class="edit-banner" id="edit-banner" hidden>
+              <h2 id="edit-title"></h2>
+              <p class="hint">Change any figure, then save. The month itself can't be changed.</p>
+            </div>
+            <div class="field">
+              <label for="r-month">Month</label>
+              <input id="r-month" name="month" type="month" required>
+              <small id="month-note" class="month-note" hidden></small>
+            </div>
+            <fieldset>
+              <legend>Profit</legend>
+              <div class="field"><label for="r-revenue">Total sales</label><input id="r-revenue" name="revenue" inputmode="numeric" required placeholder="KES" autocomplete="off"></div>
+              <div class="field"><label for="r-cogs">Cost of goods sold</label><input id="r-cogs" name="cogs" inputmode="numeric" required placeholder="KES" autocomplete="off"><small>What you paid for the stock you sold</small></div>
+              <div class="field"><label for="r-opex">Running expenses</label><input id="r-opex" name="operating_expenses" inputmode="numeric" required placeholder="KES" autocomplete="off"><small>Rent, wages, power, transport…</small></div>
+            </fieldset>
+            <fieldset>
+              <legend>Cash</legend>
+              <div class="field"><label for="r-in">Money received</label><input id="r-in" name="cash_inflows" inputmode="numeric" required placeholder="KES" autocomplete="off"></div>
+              <div class="field"><label for="r-out">Money paid out</label><input id="r-out" name="cash_outflows" inputmode="numeric" required placeholder="KES" autocomplete="off"></div>
+              <div class="field"><label for="r-mm">Received by M-Pesa <span class="opt">(optional)</span></label><input id="r-mm" name="mobile_money_receipts" inputmode="numeric" placeholder="KES" autocomplete="off"></div>
+            </fieldset>
+            <details class="more-fields" id="more-fields">
+              <summary>Stock, debt and number of sales <span class="opt">(optional)</span></summary>
+              <div class="more-body">
+                <div class="field"><label for="r-stock">Stock value at month end</label><input id="r-stock" name="closing_stock" inputmode="numeric" placeholder="KES" autocomplete="off"></div>
+                <div class="field"><label for="r-debt">Money you owe</label><input id="r-debt" name="outstanding_debt" inputmode="numeric" placeholder="KES" autocomplete="off"><small>Loans, supplier credit, chama loans…</small></div>
+                <div class="field"><label for="r-tx">Number of sales</label><input id="r-tx" name="transaction_count" inputmode="numeric" placeholder="e.g. 640" autocomplete="off"></div>
+              </div>
+            </details>
+
+            <div class="live" id="live" aria-live="polite" hidden>
+              <div><span>Profit this month</span><b id="live-profit"></b></div>
+              <div><span>Cash left over</span><b id="live-cash"></b></div>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn primary" type="submit" id="save-btn">Save month</button>
+              <button class="btn ghost" type="button" id="cancel-edit" hidden>Cancel</button>
+            </div>
+            <button class="link-btn danger delete-month" type="button" id="delete-month" hidden>Delete this month</button>
+            <p class="msg" role="status"></p>
+          </form>
+
+          <form id="panel-csv" role="tabpanel" aria-labelledby="tab-csv" class="form" hidden novalidate>
+            <p class="import-intro">Upload your records in <b>any layout</b>: a CSV or Excel file, one row per month or one row
+              per sale, months down the side or across the top, in English or Kiswahili. You'll see how we read it before
+              anything is saved.</p>
+            <div class="field drop">
+              <label for="csv-file">Spreadsheet (CSV or Excel)</label>
+              <input id="csv-file" name="file" type="file" accept=".csv,.xlsx,.xlsm,.txt,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required>
+            </div>
+            <button class="btn primary" type="submit" id="imp-read">Read my file</button>
+            <div class="msg" role="status"></div>
+            <div id="import-review" class="import-review" hidden></div>
+            <p class="hint">No records on a computer yet? <a href="/template.csv" download>Download our template</a>.
+              Months you already saved are never changed by an upload.</p>
+          </form>
+
+          <div id="panel-mpesa" role="tabpanel" aria-labelledby="tab-mpesa" hidden>
+            <div id="mpesa-locked" class="pro-locked" hidden>
+              <h2>Fill in M-Pesa figures from your statement</h2>
+              <p>Upload your M-Pesa statement and Biashara Check works out, for every month, how much you received by M-Pesa and how many payments you got. No more adding them up by hand.</p>
+              <p class="hint">Part of <b>Biashara Pro</b>, paid with M-Pesa.</p>
+              <a class="btn primary" href="/account#pro">See Biashara Pro</a>
+            </div>
+            <form id="mpesa-form" class="form" novalidate hidden>
+              <ol class="steps">
+                <li>Get your M-Pesa statement: the PDF Safaricom sends (dial *334# or use the M-Pesa app), or a CSV from the M-Pesa business portal.</li>
+                <li>Choose it below. PDF statements need their password.</li>
+                <li>Check the months, then press Update.</li>
+              </ol>
+              <div class="field drop">
+                <label for="mp-file">Statement (PDF or CSV)</label>
+                <input id="mp-file" name="file" type="file" accept=".pdf,.csv,application/pdf,text/csv" required>
+              </div>
+              <div class="field" id="mp-pass-field" hidden>
+                <label for="mp-pass">Statement password</label>
+                <input id="mp-pass" name="password" type="password" autocomplete="off">
+                <small>Usually your ID number. Used once to open the file, never saved.</small>
+              </div>
+              <button class="btn primary" type="submit">Read statement</button>
+              <div class="msg" role="status"></div>
+              <p class="hint">The statement is read and thrown away. Only monthly totals are used: no names, numbers or receipts are kept.</p>
+            </form>
+            <div id="mpesa-result" hidden>
+              <h3 class="mp-head">What we found</h3>
+              <p class="hint" id="mp-summary"></p>
+              <div class="table-wrap">
+                <table id="mp-table">
+                  <thead><tr><th scope="col"><span class="sr">Use</span></th><th scope="col">Month</th><th scope="col" class="num">Received</th><th scope="col" class="num">Payments</th></tr></thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="form-actions">
+                <button class="btn primary" type="button" id="mp-apply">Update months</button>
+                <button class="btn ghost" type="button" id="mp-again">Another file</button>
+              </div>
+              <div class="msg" role="status" id="mp-msg"></div>
+            </div>
+          </div>
+        </div>
+
+        <p class="fine">Biashara Check is decision support, not a guarantee. Your figures are not shared with lenders or anyone else.</p>
+        <aside class="app-promo" id="app-promo" aria-labelledby="ap-h" hidden>
+          <button class="ap-x" type="button" aria-label="Not now">&times;</button>
+          <div class="ap-top">
+            <img class="ap-icon" src="/static/icons/icon-192.png" alt="" width="52" height="52">
+            <div>
+              <h2 id="ap-h">Biashara Check on your phone</h2>
+              <p>Free · opens like an app · no Play Store</p>
+            </div>
+          </div>
+          <div class="ap-actions">
+            <a class="btn ap-btn" href="/install" data-install>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v11m0 0-4-4m4 4 4-4M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Install the app</a>
+            <a class="ap-more" href="/install">How it works</a>
+          </div>
+        </aside>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+
+<dialog class="report-dlg" id="report-dlg" aria-labelledby="rd-h">
+  <div class="rd-inner">
+    <div class="rd-head">
+      <h2 id="rd-h">Reports</h2>
+      <button class="rd-close" type="button" id="rd-close" aria-label="Close">&times;</button>
+    </div>
+    <p class="hint">PDF files to keep, print or share. Download them here, or have them emailed to <b id="rd-email">your confirmed email</b>. Biashara Check never sends your figures to anyone else.</p>
+
+    <section class="rd-opt">
+      <div class="rd-text">
+        <h3>Monthly summary</h3>
+        <p>Your latest month, the risk check, and a chart and table of the last 12 months. One or two pages.</p>
+      </div>
+      <div class="rd-actions">
+        <button class="btn ghost small" type="button" data-report="monthly">Download</button>
+        <button class="btn ghost small" type="button" data-email="monthly">Email me</button>
+      </div>
+    </section>
+
+    <section class="rd-opt rd-pro">
+      <div class="rd-text">
+        <h3>Business report <span class="pro-tag">Pro</span></h3>
+        <p>The full picture for a period: profit, sales and costs; where the money went; profit per 100 shillings;
+          cash left over; money owed and stock; M-Pesa share; number of sales and average sale; your risk check and how it
+          changed; highlights; and a month-by-month table. About 4 pages with 10 charts.</p>
+        <fieldset class="rd-period">
+          <legend>Period</legend>
+          <label><input type="radio" name="rd-months" value="6"> 6 months</label>
+          <label><input type="radio" name="rd-months" value="12" checked> 12 months</label>
+          <label><input type="radio" name="rd-months" value="24"> 24 months</label>
+          <label><input type="radio" name="rd-months" value="0"> All</label>
+        </fieldset>
+      </div>
+      <div class="rd-actions">
+        <button class="btn primary small" type="button" data-report="business">Download</button>
+        <button class="btn ghost small" type="button" data-email="business">Email me</button>
+      </div>
+    </section>
+
+    <section class="rd-opt rd-pro">
+      <div class="rd-text">
+        <h3>Summary for lenders <span class="pro-tag">Pro</span></h3>
+        <p>6 to 12 months of figures for a SACCO, bank or supplier, with M-Pesa months marked and a signature line. Needs 6 months.</p>
+      </div>
+      <div class="rd-actions">
+        <button class="btn ghost small" type="button" data-report="loan">Download</button>
+        <button class="btn ghost small" type="button" data-email="loan">Email me</button>
+      </div>
+    </section>
+
+    <div class="rd-lock" id="rd-lock" hidden>
+      <p><b>The business report and the summary for lenders come with Biashara Pro</b>, paid with M-Pesa.</p>
+      <a class="btn primary small" href="/account#pro">Get Biashara Pro</a>
+    </div>
+    <p class="msg" role="status" id="rd-msg"></p>
+  </div>
+</dialog>
+<script src="/static/charts.js"></script>
+<script src="/static/tour.js"></script>
+<script src="/static/app.js"></script>
+<script src="/static/assistant.js"></script>
+<script src="/static/i18n.js"></script>
+<script src="/static/pwa.js"></script>
+</body>
+</html>

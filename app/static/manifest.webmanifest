@@ -1,0 +1,87 @@
+{
+  "id": "/",
+  "name": "Biashara Check",
+  "short_name": "Biashara",
+  "description": "Check your business's risk of a loss in the next 3 months, see why, and what to do. Gross profit, cash flow and reports for Kenyan small businesses.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F2F4EF",
+  "theme_color": "#0F3D2E",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/static/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icons/maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/static/icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Add a month",
+      "url": "/#add"
+    },
+    {
+      "name": "Account",
+      "url": "/account"
+    },
+    {
+      "name": "How it's calculated",
+      "url": "/how"
+    }
+  ],
+  "categories": [
+    "business",
+    "finance",
+    "productivity"
+  ],
+  "screenshots": [
+    {
+      "src": "/static/icons/screens/phone-dashboard.png",
+      "sizes": "720x1560",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Your sales, profit, cash and risk at a glance"
+    },
+    {
+      "src": "/static/icons/screens/phone-figures.png",
+      "sizes": "720x1560",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Every figure with its formula"
+    },
+    {
+      "src": "/static/icons/screens/phone-accuracy.png",
+      "sizes": "720x1560",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "How accurate the risk check is"
+    },
+    {
+      "src": "/static/icons/screens/wide-dashboard.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "The dashboard on a computer"
+    }
+  ]
+}

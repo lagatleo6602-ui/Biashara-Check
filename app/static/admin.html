@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin: Biashara Check</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230F3D2E'/%3E%3Crect x='5' y='10' width='3.2' height='9' rx='1' fill='%23fff'/%3E%3Crect x='10.4' y='5' width='3.2' height='14' rx='1' fill='%23fff'/%3E%3Crect x='15.8' y='12.5' width='3.2' height='6.5' rx='1' fill='%23F0B429'/%3E%3C/svg%3E">
+<link rel="preload" href="/static/fonts/bricolage-grotesque-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/static/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials">
+<link rel="apple-touch-icon" href="/static/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0F3D2E">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<a class="skip" href="#admin">Skip to content</a>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="/admin"><svg class="mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="24" height="24" rx="6" fill="#0F3D2E"/><rect x="5" y="10" width="3.2" height="9" rx="1" fill="#fff"/><rect x="10.4" y="5" width="3.2" height="14" rx="1" fill="#fff"/><rect x="15.8" y="12.5" width="3.2" height="6.5" rx="1" fill="#F0B429"/></svg><span>Biashara Check</span> <span class="brand-tag">Admin</span></a>
+    <nav class="nav" aria-label="Account">
+      <a class="nav-link" href="/admin" aria-current="page">Admin</a>
+      <a class="nav-link" href="/">Dashboard</a>
+      <a class="nav-link" href="/how"><span class="wide-only">How it's calculated</span><span class="narrow-only">Method</span></a>
+      <a class="nav-link" href="/account">Account</a>
+      <button class="nav-link" id="logout" type="button">Log out</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap admin-page" id="admin" hidden>
+  <div class="dash-head">
+    <h1>Study data</h1>
+    <div class="head-actions">
+      <a class="btn ghost small" href="/admin/study-report.pdf">Study report (PDF)</a>
+      <a class="btn ghost small" href="/admin/export.csv" download><span class="wide-only">Download all records (CSV)</span><span class="narrow-only">All records (CSV)</span></a>
+    </div>
+  </div>
+
+  <div id="notice" class="notice" role="status" hidden></div>
+
+  <section class="card progress-card" aria-labelledby="progress-h">
+    <h2 id="progress-h">Business-months collected</h2>
+    <p class="progress-num"><span id="p-total">0</span> <span class="of">of <span id="p-target">1,500</span> target</span></p>
+    <div class="meter" role="img" id="meter" aria-label="">
+      <span class="meter-real" id="m-real"></span><span class="meter-syn" id="m-syn"></span>
+    </div>
+    <ul class="legend">
+      <li><span class="sw sw-real"></span><span id="l-real">0 real</span></li>
+      <li><span class="sw sw-syn"></span><span id="l-syn">0 synthetic</span></li>
+    </ul>
+    <dl class="stats" id="a-stats"></dl>
+  </section>
+
+
+
+
+
+
+
+  <div class="acct admin-tabs">
+    <nav class="acct-nav" aria-label="Admin sections" role="tablist">
+      <button type="button" role="tab" data-tab="businesses" id="tab-businesses">Businesses</button>
+      <button type="button" role="tab" data-tab="add" id="tab-add">Add a business</button>
+      <button type="button" role="tab" data-tab="model" id="tab-model">Risk model</button>
+      <button type="button" role="tab" data-tab="payments" id="tab-payments">Biashara Pro and M-Pesa</button>
+      <button type="button" role="tab" data-tab="messages" id="tab-messages">Email and SMS</button>
+      <button type="button" role="tab" data-tab="feedback" id="tab-feedback">User feedback</button>
+      <button type="button" role="tab" data-tab="activity" id="tab-activity">Activity log</button>
+      <button type="button" role="tab" data-tab="admins" id="tab-admins">Admins</button>
+    </nav>
+    <div class="acct-body">
+    <div class="acct-panel" role="tabpanel" data-panel="businesses" aria-labelledby="tab-businesses">
+      <section class="card" aria-labelledby="biz-h">
+        <div class="card-head row">
+          <h2 id="biz-h">Businesses</h2>
+          <span class="head-right"><span class="hint" id="biz-count"></span>
+            <button class="btn primary small" type="button" data-goto="add">Add a business</button></span>
+        </div>
+        <div class="admin-tools">
+          <label class="sr" for="biz-search">Find a business</label>
+          <input id="biz-search" type="search" placeholder="Find by code, e.g. SME-01" autocomplete="off">
+        </div>
+        <div class="table-wrap">
+          <table id="biz">
+            <thead><tr>
+              <th scope="col">Code</th><th scope="col">Type</th><th scope="col">Months</th>
+              <th scope="col">Loss months</th><th scope="col">Contact</th><th scope="col">Login</th><th scope="col"><span class="sr">Actions</span></th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+    <div class="acct-panel" role="tabpanel" data-panel="add" aria-labelledby="tab-add" hidden>
+      <form class="card form" id="create-form" novalidate>
+        <h2>Add a business</h2>
+        <p class="hint">Use this after taking written consent in person. You'll get a temporary password to give the owner.</p>
+        <div class="field">
+          <label for="c-code">Business code</label>
+          <input id="c-code" name="code" placeholder="SME-015" required minlength="3" maxlength="20" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="c-sector">Type of business</label>
+          <select id="c-sector" name="sector">
+            <option value="retail">Retail shop / duka</option>
+            <option value="wholesale">Wholesale / distributor</option>
+            <option value="service">Other services</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="c-start">Started trading <span class="opt">(optional)</span></label>
+          <input id="c-start" name="start_date" type="month">
+        </div>
+        <div class="field">
+          <label for="c-email">Owner's email <span class="opt">(optional)</span></label>
+          <input id="c-email" name="email" type="email" autocomplete="off" placeholder="name@gmail.com">
+        </div>
+        <div class="field">
+          <label for="c-phone">Owner's mobile <span class="opt">(optional)</span></label>
+          <input id="c-phone" name="phone" type="tel" autocomplete="off" placeholder="0712 345 678">
+          <small>Give both or neither. Only add them if the owner agreed on the consent form. Otherwise they add them on first login.</small>
+        </div>
+        <label class="consent">
+          <input type="checkbox" name="is_synthetic">
+          <span>Synthetic business (generated data, no login, reported separately)</span>
+        </label>
+        <button class="btn primary" type="submit">Add business</button>
+        <p class="msg" role="status"></p>
+      </form>
+    </div>
+    <div class="acct-panel" role="tabpanel" data-panel="model" aria-labelledby="tab-model" hidden>
+      <section class="card model-card" aria-labelledby="model-h">
+        <div class="card-head row">
+          <h2 id="model-h">Risk model</h2>
+          <span id="model-badge"></span>
+        </div>
+        <p class="model-state" id="model-state"></p>
+
+        <div class="model-tools">
+          <div class="tool">
+            <h3>Train</h3>
+            <p class="hint">Compares logistic regression, random forest, XGBoost and LightGBM on the latest months, keeps the best (calibrated with Platt scaling), trains the statistical financial-distress model, and re-scores every business.</p>
+            <label class="consent small-consent"><input type="checkbox" id="real-only"><span>Real businesses only (leave synthetic out)</span></label>
+            <button class="btn primary small" type="button" id="train-btn">Train the model</button>
+          </div>
+          <div class="tool">
+            <h3>Synthetic data</h3>
+            <p class="hint" id="syn-state"></p>
+            <div class="test-row">
+              <label class="sr" for="syn-n">Number of synthetic businesses</label>
+              <input id="syn-n" type="number" min="1" max="300" value="60" inputmode="numeric">
+              <button class="btn ghost small" type="button" id="syn-add">Add synthetic businesses</button>
+            </div>
+            <div class="import-row">
+              <label class="btn ghost small file-btn" for="trn-file">Import training CSV</label>
+              <input id="trn-file" type="file" accept=".csv,text/csv" class="sr">
+              <span class="hint">Same columns as <i>Download all records</i>. Added as synthetic.</span>
+            </div>
+            <button class="link-btn danger" type="button" id="syn-remove">Remove all synthetic businesses</button>
+          </div>
+        </div>
+        <p class="msg" role="status" id="model-msg"></p>
+
+        <div id="model-results" hidden>
+          <h3 class="sub-h">How the four models did on the test months</h3>
+          <p class="hint" id="model-split"></p>
+          <div class="table-wrap">
+            <table id="model-table">
+              <thead><tr><th scope="col">Model</th><th scope="col">PR-AUC</th><th scope="col">ROC-AUC</th><th scope="col">Recall</th><th scope="col">Precision</th><th scope="col">F1</th><th scope="col">Brier</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="hint">PR-AUC is the main measure because loss months are rarer. Recall = share of coming losses the model caught. Brier: lower is better.
+            Calibration, the comparison with a simple rule, and the distress model's coefficients and tests are on <a href="/how#accuracy">How it's calculated</a>.</p>
+          <div class="model-grid">
+            <div>
+              <h3 class="sub-h">Confusion matrix <span class="hint" id="cm-name"></span></h3>
+              <div class="cm" id="cm" role="table" aria-label="Confusion matrix"></div>
+            </div>
+            <div>
+              <h3 class="sub-h">What drives the predictions</h3>
+              <p class="hint">Average influence on the predicted risk (mean |SHAP|), test months.</p>
+              <div id="imp" class="imp"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="acct-panel" role="tabpanel" data-panel="payments" aria-labelledby="tab-payments" hidden>
+      <section class="card pay-card" aria-labelledby="pay-h">
+        <div class="card-head row">
+          <h2 id="pay-h">Biashara Pro and M-Pesa</h2>
+          <span id="pay-mode"></span>
+        </div>
+        <p class="hint" id="pay-mode-text"></p>
+        <div class="mpesa-check">
+          <button class="btn ghost small" type="button" id="mpesa-check">Check M-Pesa connection</button>
+          <button class="btn ghost small" type="button" id="callback-test">Test callback address</button>
+          <p class="msg" role="status" id="mpesa-check-msg"></p>
+        </div>
+        <p class="callback-line" id="callback-line"></p>
+        <dl class="pay-sum" id="pay-sum"></dl>
+        <p class="hint">Study participants don't need to pay: use <b>Give Pro</b> on a business above to switch it on free for 90 days.</p>
+        <div class="table-wrap">
+          <table id="pays">
+            <thead><tr><th scope="col">When</th><th scope="col">Business</th><th scope="col">Amount</th><th scope="col">Phone</th><th scope="col">Status</th><th scope="col">M-Pesa receipt</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+    <div class="acct-panel" role="tabpanel" data-panel="messages" aria-labelledby="tab-messages" hidden>
+      <section class="card messaging-card" aria-labelledby="msg-h">
+        <h2 id="msg-h">Email and SMS</h2>
+        <div class="channels">
+          <div class="channel" id="ch-email"></div>
+          <div class="channel" id="ch-sms"></div>
+        </div>
+        <div class="reminder-row">
+          <div><h3>Monthly reminders</h3><p class="hint">Sent automatically from the 2nd to the 10th of each month to owners who haven't added last month. Never twice in a month.</p></div>
+          <button class="btn ghost small" type="button" id="remind-btn">Send reminders now</button>
+        </div>
+        <p class="msg" role="status" id="remind-msg"></p>
+        <div class="reminder-row">
+          <div><h3>Biashara Pro renewals</h3><p class="hint">Checked every 30 minutes: owners with automatic renewal get a notice 3 days before Pro ends and an M-Pesa prompt a day before (paid only if they enter their PIN). Owners can cancel on their Account page.</p></div>
+          <button class="btn ghost small" type="button" id="renew-btn">Run renewals now</button>
+        </div>
+        <p class="msg" role="status" id="renew-msg"></p>
+        <form class="test-send" id="test-form" novalidate>
+          <h3>Send a test</h3>
+          <div class="test-row">
+            <label class="sr" for="t-channel">Channel</label>
+            <select id="t-channel"><option value="email">Email</option><option value="sms">SMS</option></select>
+            <label class="sr" for="t-to">Send to</label>
+            <input id="t-to" placeholder="your email" autocomplete="off">
+            <button class="btn primary small" type="submit">Send test</button>
+          </div>
+          <p class="msg" role="status"></p>
+        </form>
+      </section>
+    </div>
+    <div class="acct-panel" role="tabpanel" data-panel="feedback" aria-labelledby="tab-feedback" hidden>
+      <section class="card feedback-card" aria-labelledby="fbk-h">
+        <div class="card-head row">
+          <h2 id="fbk-h">User feedback</h2>
+          <span class="hint" id="fbk-count"></span>
+        </div>
+        <p class="hint">Owners rate 11 statements from 1 to 5 on their Account page (proposal Appendix B). Target: an average of 4 or more.</p>
+        <dl class="pay-sum" id="fbk-groups"></dl>
+        <div class="table-wrap">
+          <table id="fbk-table"><thead><tr><th scope="col">Statement</th><th scope="col">Average</th><th scope="col">Answers</th></tr></thead><tbody></tbody></table>
+        </div>
+        <details class="fbk-comments"><summary>Comments</summary><ul id="fbk-comments"></ul></details>
+      </section>
+    </div>
+    <div class="acct-panel" role="tabpanel" data-panel="activity" aria-labelledby="tab-activity" hidden>
+      <section class="card activity-card" aria-labelledby="act-h">
+        <div class="card-head row">
+          <h2 id="act-h">Activity</h2>
+          <span class="hint">Times in Nairobi time. Latest first.</span>
+        </div>
+        <p class="hint">Every login, change to figures, account change and admin action, with who did it. Use it to trace any change back to a person.</p>
+        <div class="admin-tools act-tools">
+          <label class="sr" for="act-target">Business or user</label>
+          <input id="act-target" type="search" placeholder="Business code or username" autocomplete="off">
+          <label class="sr" for="act-kind">Kind of activity</label>
+          <select id="act-kind">
+            <option value="">All activity</option>
+            <option value="login">Logins</option>
+            <option value="record">Changes to figures</option>
+            <option value="contact">Contact details</option>
+            <option value="password">Passwords</option>
+            <option value="admin">Admin actions</option>
+            <option value="admin.invite">Admin codes</option>
+            <option value="business">Businesses added or deleted</option>
+            <option value="account">Accounts created or deleted</option>
+            <option value="payment">M-Pesa payments</option>
+            <option value="pro">Pro given or removed</option>
+            <option value="mpesa">M-Pesa statements</option>
+            <option value="model">Model training</option>
+            <option value="report">Reports downloaded or emailed</option>
+            <option value="alert">Risk alerts</option>
+            <option value="reminder">Reminders</option>
+            <option value="feedback">Feedback</option>
+            <option value="synthetic">Synthetic data</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table id="act">
+            <thead><tr><th scope="col">When</th><th scope="col">Who</th><th scope="col">What</th><th scope="col">Business</th><th scope="col">Details</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+    <div class="acct-panel" role="tabpanel" data-panel="admins" aria-labelledby="tab-admins" hidden>
+      <section class="card admins-card" aria-labelledby="adm-h">
+        <div class="card-head row">
+          <h2 id="adm-h">Admins</h2>
+          <span class="hint" id="adm-count"></span>
+        </div>
+        <div class="table-wrap">
+          <table id="adm">
+            <thead><tr>
+              <th scope="col">Username</th><th scope="col">Role</th><th scope="col">Contact</th>
+              <th scope="col">Last login</th><th scope="col"><span class="sr">Actions</span></th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="hint" id="adm-note" hidden></p>
+
+        <div class="admin-sub" id="super-tools" hidden>
+          <div class="sub-box" id="invite-box">
+            <h3>Add an admin</h3>
+            <p class="hint">Generate a one-time code and give it to the new admin in person or by phone. On the login page they choose Create account, then Study admin, and enter it. A code works once and expires after <span id="inv-hours">24</span> hours. Generating a new one cancels the old one.</p>
+            <p class="invite-status" id="inv-status" aria-live="polite"></p>
+            <div class="pw-row invite-code" id="inv-code" hidden></div>
+            <div class="btn-row">
+              <button class="btn primary small" type="button" id="inv-new">Generate code</button>
+              <button class="btn ghost small" type="button" id="inv-cancel" hidden>Cancel code</button>
+            </div>
+            <p class="msg" role="status"></p>
+          </div>
+          <form class="sub-box" id="handover" novalidate>
+            <h3>Hand over super admin</h3>
+            <p class="hint">There is one super admin. Hand the role over before you leave the study. You'll stay an admin but can no longer add admins.</p>
+            <div class="test-row">
+              <label class="sr" for="ho-user">New super admin</label>
+              <select id="ho-user"></select>
+              <label class="sr" for="ho-pass">Your password</label>
+              <input id="ho-pass" type="password" placeholder="Your password" autocomplete="current-password">
+              <button class="btn ghost small" type="submit">Hand over</button>
+            </div>
+            <p class="msg" role="status"></p>
+          </form>
+        </div>
+      </section>
+    </div>
+    </div>
+  </div>
+</main>
+
+<script src="/static/admin.js"></script>
+<script src="/static/pwa.js"></script>
+</body>
+</html>

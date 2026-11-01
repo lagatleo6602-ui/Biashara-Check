@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log in to Biashara Check</title>
+<meta name="description" content="Log in to check your business's risk of making a loss in the next 3 months.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230F3D2E'/%3E%3Crect x='5' y='10' width='3.2' height='9' rx='1' fill='%23fff'/%3E%3Crect x='10.4' y='5' width='3.2' height='14' rx='1' fill='%23fff'/%3E%3Crect x='15.8' y='12.5' width='3.2' height='6.5' rx='1' fill='%23F0B429'/%3E%3C/svg%3E">
+<link rel="preload" href="/static/fonts/bricolage-grotesque-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/static/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials">
+<link rel="apple-touch-icon" href="/static/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0F3D2E">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body class="auth-page">
+<main class="auth">
+  <section class="auth-intro" aria-labelledby="intro-h">
+    <div class="lang-slot" data-lang-slot></div>
+    <a class="brand" href="/"><svg class="mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="24" height="24" rx="6" fill="#0F3D2E"/><rect x="5" y="10" width="3.2" height="9" rx="1" fill="#fff"/><rect x="10.4" y="5" width="3.2" height="14" rx="1" fill="#fff"/><rect x="15.8" y="12.5" width="3.2" height="6.5" rx="1" fill="#F0B429"/></svg><span>Biashara Check</span></a>
+    <div class="intro-body">
+      <h1 id="intro-h">Spot a loss before it reaches your cash box.</h1>
+      <p class="lede">Add your monthly sales and expenses. We look at the last few months and warn you if the next three are heading toward a loss.</p>
+      <figure class="sample" aria-label="Example: a shop's profit for six months, with the last two months falling and a moderate risk warning">
+        <div class="sample-head"><span>Example shop</span><b>Moderate risk</b></div>
+        <svg viewBox="0 0 240 92" aria-hidden="true" focusable="false">
+          <line x1="0" y1="64" x2="240" y2="64" class="axis"/>
+          <rect x="8" y="22" width="26" height="42" rx="3"/>
+          <rect x="48" y="14" width="26" height="50" rx="3"/>
+          <rect x="88" y="26" width="26" height="38" rx="3"/>
+          <rect x="128" y="34" width="26" height="30" rx="3"/>
+          <rect x="168" y="46" width="26" height="18" rx="3" class="warn"/>
+          <rect x="208" y="64" width="26" height="12" rx="3" class="loss"/>
+        </svg>
+        <figcaption>Profit is falling month after month. Check supplier prices before it turns into a loss.</figcaption>
+      </figure>
+      <ul class="intro-points">
+        <li>Works with a sales book, Excel or your M-Pesa statement</li>
+        <li>Your figures are never shared with lenders</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="auth-side">
+
+  <div class="card auth-card">
+    <div class="notice deleted-note" id="deleted-note" hidden role="status">
+      <p><b>Your account has been deleted.</b> Your figures, login, email and phone number have been erased. Thank you for taking part.</p>
+    </div>
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tab-login" aria-selected="true" aria-controls="login-form">Log in</button>
+      <button role="tab" id="tab-signup" aria-selected="false" aria-controls="signup-form" tabindex="-1">Create account</button>
+    </div>
+
+    <form id="login-form" role="tabpanel" aria-labelledby="tab-login" class="form" novalidate>
+      <div class="field">
+        <label for="l-user">Username, business code or email</label>
+        <input id="l-user" name="username" autocomplete="username" autocapitalize="none" placeholder="SME-001 or name@gmail.com" required>
+      </div>
+      <div class="field">
+        <label for="l-pass">Password</label>
+        <div class="pw">
+          <input id="l-pass" name="password" type="password" autocomplete="current-password" required>
+          <button class="pw-toggle" type="button" aria-controls="l-pass" aria-pressed="false">Show</button>
+        </div>
+      </div>
+      <button class="btn primary" type="submit">Log in</button>
+      <p class="msg" role="status"></p>
+      <button class="link-btn forgot" type="button" id="forgot-link">Forgot your password?</button>
+    </form>
+
+    <section id="recover" hidden aria-labelledby="recover-h">
+      <h2 id="recover-h">Reset your password</h2>
+      <fieldset class="segmented reset-way">
+        <legend class="sr">How do you want to reset it?</legend>
+        <label><input type="radio" name="reset_way" value="email" checked><span>Email me</span></label>
+        <label id="way-sms" hidden><input type="radio" name="reset_way" value="sms"><span>Text me</span></label>
+        <label><input type="radio" name="reset_way" value="recovery"><span>Recovery code</span></label>
+      </fieldset>
+
+      <form id="forgot-form" class="form" novalidate>
+        <p class="hint" id="forgot-hint">We'll send a 6-digit code to the email on your account. It only works if you confirmed that email.</p>
+        <div class="field" id="f-email-field">
+          <label for="f-email">Email</label>
+          <input id="f-email" name="email" type="email" autocomplete="email" placeholder="name@gmail.com" required>
+        </div>
+        <div class="field" id="f-phone-field" hidden>
+          <label for="f-phone">Mobile number</label>
+          <input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="0712 345 678">
+        </div>
+        <button class="btn primary" type="submit">Send code</button>
+        <p class="msg" role="status"></p>
+      </form>
+
+      <form id="email-reset-form" class="form" hidden novalidate>
+        <div class="field">
+          <label for="e-code" id="e-code-label">6-digit code from the email</label>
+          <input id="e-code" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="7" placeholder="123456" required>
+        </div>
+        <div class="field">
+          <label for="e-pass">New password</label>
+          <div class="pw">
+            <input id="e-pass" name="password" type="password" autocomplete="new-password" minlength="8" required>
+            <button class="pw-toggle" type="button" aria-controls="e-pass" aria-pressed="false">Show</button>
+          </div>
+          <small>At least 8 characters.</small>
+        </div>
+        <button class="btn primary" type="submit">Set new password</button>
+        <p class="msg" role="status"></p>
+        <button class="link-btn" type="button" id="resend-reset">Send a new code</button>
+      </form>
+
+      <form id="recover-form" class="form" hidden novalidate>
+        <p class="hint">Use the recovery code you wrote down when you created your account.</p>
+        <div class="field">
+          <label for="r-user">Username, business code or email</label>
+          <input id="r-user" name="username" autocomplete="username" autocapitalize="none" placeholder="SME-001" required>
+        </div>
+        <div class="field">
+          <label for="r-code">Recovery code</label>
+          <input id="r-code" name="recovery_code" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="xxxx-xxxx-xxxx-xxxx" required>
+        </div>
+        <div class="field">
+          <label for="r-pass">New password</label>
+          <div class="pw">
+            <input id="r-pass" name="password" type="password" autocomplete="new-password" minlength="8" required>
+            <button class="pw-toggle" type="button" aria-controls="r-pass" aria-pressed="false">Show</button>
+          </div>
+          <small>At least 8 characters.</small>
+        </div>
+        <button class="btn primary" type="submit">Set new password</button>
+        <p class="msg" role="status"></p>
+      </form>
+
+      <p class="hint reset-help">No access to your email and no recovery code? Ask the study team. They can give you a temporary password.</p>
+      <button class="link-btn" type="button" id="back-to-login">Back to log in</button>
+    </section>
+
+    <div id="rc-screen" hidden></div>
+
+    <form id="confirm-screen" class="form confirm" hidden novalidate aria-labelledby="cf-h">
+      <svg class="confirm-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+        <rect x="4" y="10" width="40" height="28" rx="5"/><path d="M6 13l18 13 18-13"/>
+      </svg>
+      <h2 id="cf-h">Check your email</h2>
+      <p>We sent a 6-digit code to <b id="cf-email"></b>. Enter it to confirm your email and create your account.</p>
+      <p class="hint" id="cf-console" hidden>Email isn't set up on this server yet, so the code is printed in the server window.</p>
+      <div class="field">
+        <label for="cf-code">6-digit code</label>
+        <input id="cf-code" class="code-input" inputmode="numeric" autocomplete="one-time-code" maxlength="7" placeholder="123456">
+      </div>
+      <button class="btn primary" type="submit">Confirm and create account</button>
+      <p class="msg" role="status"></p>
+      <div class="cf-links">
+        <button class="link-btn" type="button" id="cf-resend">Send a new code</button>
+        <button class="link-btn" type="button" id="cf-back">Change my details</button>
+      </div>
+      <p class="hint">The code works for 15 minutes. Can't find it? Look in your spam or promotions folder.</p>
+    </form>
+
+    <form id="signup-form" role="tabpanel" aria-labelledby="tab-signup" class="form" hidden novalidate>
+      <fieldset class="segmented" id="account-type" hidden>
+        <legend>Account type</legend>
+        <label><input type="radio" name="account_type" value="owner" checked><span>Business owner</span></label>
+        <label><input type="radio" name="account_type" value="admin"><span>Study admin</span></label>
+      </fieldset>
+
+      <div id="owner-fields" class="form">
+        <p class="hint">We don't ask for your name or ID number. Your business gets a code, and you log in with that code or your email.</p>
+        <div class="field">
+          <label for="s-code">Choose a business code</label>
+          <input id="s-code" name="code" autocomplete="username" autocapitalize="characters" placeholder="SME-014" maxlength="20">
+          <small>Letters, numbers and dashes. Don't use your name or phone number.</small>
+        </div>
+        <div class="field">
+          <label for="s-sector">Type of business</label>
+          <select id="s-sector" name="sector">
+            <option value="retail">Retail shop / duka</option>
+            <option value="wholesale">Wholesale / distributor</option>
+            <option value="service">Other services</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="s-start">Started trading <span class="opt">(optional)</span></label>
+          <input id="s-start" name="start_date" type="month">
+        </div>
+      </div>
+
+      <div id="admin-fields" class="form" hidden>
+        <p class="hint" id="admin-hint">For the study team only. Admins can see every business's figures, so you need a one-time admin code from the super admin.</p>
+        <div class="field">
+          <label for="s-user">Admin username</label>
+          <input id="s-user" name="username" autocomplete="username" autocapitalize="none" placeholder="researcher" maxlength="40">
+          <small>Letters, numbers, dots, dashes or underscores.</small>
+        </div>
+        <div class="field">
+          <label for="s-admincode">Admin code</label>
+          <input id="s-admincode" name="admin_code" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="xxxx-xxxx-xxxx-xxxx">
+          <small id="admincode-help">Each code works once and expires after 24 hours.</small>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="s-email">Email</label>
+        <input id="s-email" name="email" type="email" autocomplete="email" placeholder="name@gmail.com" required>
+        <small>We'll send a code to confirm it. Used to reset your password.</small>
+      </div>
+      <div class="field">
+        <label for="s-phone">Mobile number</label>
+        <input id="s-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="0712 345 678" required>
+      </div>
+
+      <div class="field">
+        <label for="s-pass">Password</label>
+        <div class="pw">
+          <input id="s-pass" name="password" type="password" autocomplete="new-password" minlength="8" required>
+          <button class="pw-toggle" type="button" aria-controls="s-pass" aria-pressed="false">Show</button>
+        </div>
+        <small>At least 8 characters.</small>
+      </div>
+      <label class="consent" id="consent-row">
+        <input type="checkbox" name="consent">
+        <span>I agree that my business figures can be used, without my name, for the SME loss-risk research study. I can ask for them to be deleted at any time.</span>
+      </label>
+      <label class="consent">
+        <input type="checkbox" name="contact_consent">
+        <span>I agree that the study team may contact me by email or phone about my account and this study. My email and number are stored encrypted, kept apart from my business figures, and never shared.</span>
+      </label>
+      <button class="btn primary" type="submit">Continue</button>
+      <p class="hint signup-next">Next, we'll email you a code to confirm your address. Your account is created once you enter it.</p>
+      <p class="msg" role="status"></p>
+    </form>
+  </div>
+
+  <p class="fine auth-fine">Biashara Check is decision support, not a guarantee. Your figures are not shared with lenders or anyone else.
+</p>
+  <a class="login-app" href="/install" data-install><img src="/static/icons/icon-192.png" alt="" width="36" height="36">
+    <span><b>Get the app on your phone</b><small>Free, installs in seconds, no Play Store</small></span><span class="la-go" aria-hidden="true">→</span></a>
+  </div>
+</main>
+
+<script src="/static/login.js"></script>
+<script src="/static/i18n.js"></script>
+<script src="/static/pwa.js"></script>
+</body>
+</html>

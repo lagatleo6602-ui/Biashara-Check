@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get the app: Biashara Check</title>
+<meta name="description" content="Install Biashara Check on your phone or computer, straight from the browser.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230F3D2E'/%3E%3Crect x='5' y='10' width='3.2' height='9' rx='1' fill='%23fff'/%3E%3Crect x='10.4' y='5' width='3.2' height='14' rx='1' fill='%23fff'/%3E%3Crect x='15.8' y='12.5' width='3.2' height='6.5' rx='1' fill='%23F0B429'/%3E%3C/svg%3E">
+<link rel="preload" href="/static/fonts/bricolage-grotesque-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/static/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials">
+<link rel="apple-touch-icon" href="/static/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0F3D2E">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="/"><svg class="mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="24" height="24" rx="6" fill="#0F3D2E"/><rect x="5" y="10" width="3.2" height="9" rx="1" fill="#fff"/><rect x="10.4" y="5" width="3.2" height="14" rx="1" fill="#fff"/><rect x="15.8" y="12.5" width="3.2" height="6.5" rx="1" fill="#F0B429"/></svg><span>Biashara Check</span></a>
+    <nav class="nav" aria-label="Account">
+      <a class="nav-link" id="home-link" href="/">Dashboard</a>
+      <a class="nav-link" href="/install" aria-current="page"><span class="wide-only">Get the app</span><span class="narrow-only">App</span></a>
+      <a class="nav-link" id="acct-link" href="/account">Account</a>
+    </nav>
+  </div>
+</header>
+
+<main class="get-app" id="main">
+  <section class="ga-band">
+    <div class="wrap ga-band-in">
+      <div class="ga-copy">
+        <p class="ga-kicker">Free · No Play Store needed · Under 1 MB</p>
+        <h1>Biashara Check, right on your phone</h1>
+        <p class="ga-lede">One tap and it sits on your home screen like any other app. It opens full screen, keeps you logged in, and your risk check is always a tap away.</p>
+        <ul class="ga-ticks">
+          <li>Its own icon, opens full screen</li>
+          <li>Updates itself, nothing to download again</li>
+          <li>Your figures stay safe on the server, not the phone</li>
+        </ul>
+        <div class="ga-cta">
+          <button class="btn ga-big" type="button" id="ga-install">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v11m0 0-4-4m4 4 4-4M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span id="ga-install-label">Install the app</span></button>
+          <p class="ga-state" id="ga-state" role="status"></p>
+        </div>
+      </div>
+      <div class="ga-phone" aria-hidden="true">
+        <div class="gp-screen">
+          <div class="gp-status"><span>9:41</span><span>▴ ▮</span></div>
+          <div class="gp-grid">
+            <i style="--c:#4C8BF5"></i><i style="--c:#34A853"></i><i style="--c:#F28B30"></i><i style="--c:#A142F4"></i>
+            <i style="--c:#EA4335"></i><i style="--c:#00ACC1"></i><i style="--c:#F6BF26"></i><i style="--c:#5F6368"></i>
+            <b class="gp-app"><img src="/static/icons/icon-192.png" alt=""><span>Biashara</span></b>
+            <i style="--c:#1E8E3E"></i><i style="--c:#C5221F"></i><i style="--c:#7B61FF"></i>
+          </div>
+          <div class="gp-dock"><i style="--c:#34A853"></i><i style="--c:#4C8BF5"></i><i style="--c:#EA4335"></i><i style="--c:#F6BF26"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap ga-body">
+  <p class="notice warn" id="ga-local" hidden></p>
+  <p class="notice warn" id="ga-blocked" hidden></p>
+
+  <figure class="ga-qr" id="ga-qr" hidden>
+    <div class="qr-box" id="qr-box"></div>
+    <figcaption><b>On a computer?</b> Scan this with your phone's camera to open Biashara Check on the phone, then tap <b>Install the app</b> there.
+      <span class="ga-url" id="ga-url"></span></figcaption>
+  </figure>
+
+  <section class="ga-devices" aria-labelledby="ga-steps-h">
+    <h2 id="ga-steps-h">How to install</h2>
+    <div class="ga-tabs" role="tablist" aria-label="Your device">
+      <button type="button" role="tab" data-dev="android" id="t-android">Android phone</button>
+      <button type="button" role="tab" data-dev="iphone" id="t-iphone">iPhone or iPad</button>
+      <button type="button" role="tab" data-dev="computer" id="t-computer">Computer</button>
+    </div>
+    <ol class="card ga-steps" data-dev="android" role="tabpanel" aria-labelledby="t-android">
+      <li><b>Open Biashara Check in Chrome</b> (the address you use to log in).</li>
+      <li>Tap <b>Install app</b> at the top of the page, or open Chrome's menu <b>⋮</b> and choose <b>Install app</b> (on some phones: <b>Add to Home screen</b>).</li>
+      <li>Tap <b>Install</b>. The Biashara Check icon appears on your home screen and in your apps.</li>
+      <li>Open it from the icon and log in once. You stay logged in for 12 hours at a time.</li>
+    </ol>
+    <ol class="card ga-steps" data-dev="iphone" role="tabpanel" aria-labelledby="t-iphone" hidden>
+      <li><b>Open Biashara Check in Safari</b> (installing only works from Safari on iPhone and iPad).</li>
+      <li>Tap the <b>Share</b> button (the square with an arrow pointing up).</li>
+      <li>Scroll down and tap <b>Add to Home Screen</b>, then <b>Add</b>.</li>
+      <li>Open it from the new icon on your home screen and log in.</li>
+    </ol>
+    <ol class="card ga-steps" data-dev="computer" role="tabpanel" aria-labelledby="t-computer" hidden>
+      <li><b>Open Biashara Check in Chrome or Microsoft Edge.</b></li>
+      <li>Click <b>Install app</b> at the top of the page, or the install icon at the right end of the address bar (a screen with a down arrow).</li>
+      <li>Click <b>Install</b>. Biashara Check opens in its own window and gets a Start-menu or Dock icon.</li>
+    </ol>
+  </section>
+
+  <section class="card ga-faq" aria-labelledby="ga-faq-h">
+    <h2 id="ga-faq-h">Good to know</h2>
+    <dl>
+      <div><dt>Does it cost anything?</dt><dd>No. Installing is free and uses very little space (well under 1 MB).</dd></div>
+      <div><dt>Does it work without internet?</dt><dd>It opens without a connection and shows a short message, but your figures, risk check and reports need the internet, because they're kept safely on the server, not on the phone.</dd></div>
+      <div><dt>How does it update?</dt><dd>By itself: every time you open it with a connection you get the latest version.</dd></div>
+      <div><dt>Is my data on the phone?</dt><dd>No. Figures are never stored on the device, so a lost phone doesn't expose them. Log out on shared phones.</dd></div>
+      <div><dt>How do I remove it?</dt><dd>Like any app: press and hold the icon and choose Uninstall or Remove. Your account and figures stay safe on the server.</dd></div>
+      <div><dt>I don't see "Install app"</dt><dd>Use Chrome on Android, Safari on iPhone, or Chrome or Edge on a computer. The address must start with <b>https://</b> (or be this computer's own 127.0.0.1). If you've already installed it, the option disappears: open it from the icon.</dd></div>
+    </dl>
+  </section>
+  </div>
+</main>
+
+<div class="ga-guide" id="ga-guide" role="dialog" aria-modal="true" aria-labelledby="gg-h" hidden>
+  <div class="gg-arrow" id="gg-arrow" aria-hidden="true"></div>
+  <div class="gg-card">
+    <h2 id="gg-h">Two taps to install</h2>
+    <ol id="gg-steps"></ol>
+    <button class="btn primary" type="button" id="gg-done">Got it</button>
+  </div>
+</div>
+<script src="/static/vendor/qrcode.js"></script>
+<script src="/static/install.js"></script>
+<script src="/static/i18n.js"></script>
+<script src="/static/pwa.js"></script>
+</body>
+</html>

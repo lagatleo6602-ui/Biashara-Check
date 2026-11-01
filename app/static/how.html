@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How it's calculated: Biashara Check</title>
+<meta name="description" content="How Biashara Check works out your figures and your risk, how accurate it is, and how your data is protected.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230F3D2E'/%3E%3Crect x='5' y='10' width='3.2' height='9' rx='1' fill='%23fff'/%3E%3Crect x='10.4' y='5' width='3.2' height='14' rx='1' fill='%23fff'/%3E%3Crect x='15.8' y='12.5' width='3.2' height='6.5' rx='1' fill='%23F0B429'/%3E%3C/svg%3E">
+<link rel="preload" href="/static/fonts/bricolage-grotesque-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/static/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials">
+<link rel="apple-touch-icon" href="/static/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0F3D2E">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="/"><svg class="mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="24" height="24" rx="6" fill="#0F3D2E"/><rect x="5" y="10" width="3.2" height="9" rx="1" fill="#fff"/><rect x="10.4" y="5" width="3.2" height="14" rx="1" fill="#fff"/><rect x="15.8" y="12.5" width="3.2" height="6.5" rx="1" fill="#F0B429"/></svg><span>Biashara Check</span></a>
+    <nav class="nav" aria-label="Account">
+      <a class="nav-link" id="home-link" href="/">Dashboard</a>
+      <a class="nav-link" href="/how" aria-current="page"><span class="wide-only">How it's calculated</span><span class="narrow-only">Method</span></a>
+      <a class="nav-link" href="/account">Account</a>
+      <button class="nav-link" id="logout" type="button">Log out</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap how" id="main">
+  <h1>How it's calculated</h1>
+  <p class="lede">Every number in Biashara Check, where it comes from, how well the predictions have been tested, and how your data is protected.</p>
+
+  <nav class="how-toc" aria-label="On this page">
+    <a href="#kinds">ML, statistics or rules?</a>
+    <a href="#figures">Your figures</a>
+    <a href="#risk">The risk %</a>
+    <a href="#accuracy">Is it accurate?</a>
+    <a href="#outlook">1-12 months ahead</a>
+    <a href="#distress">Distress model</a>
+    <a href="#yours" data-owner hidden>Your track record</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#integrity">Data integrity</a>
+  </nav>
+
+  <!-- 1 -->
+  <section class="card how-sec" id="kinds" aria-labelledby="h-kinds">
+    <h2 id="h-kinds">Is it machine learning, a statistical model, or rules?</h2>
+    <p>All three, each for a different job. Simple sums are never sent to a model, and the models never change your figures.</p>
+    <div class="table-wrap">
+      <table class="how-table kinds">
+        <thead><tr><th scope="col">Part of the app</th><th scope="col">What kind</th><th scope="col">What it does</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Your business figures (gross profit, cash flow, break-even…)</th><td><span class="kind k-arith">Arithmetic</span></td>
+            <td>Fixed formulas on the numbers you typed. Shown with your own numbers worked through below.</td></tr>
+          <tr><th scope="row">Warnings from business rules</th><td><span class="kind k-rule">Rule-based</span></td>
+            <td>Fixed if-then checks, for example "warn when gross profit is less than running expenses". Each warning shows the rule that triggered it.</td></tr>
+          <tr><th scope="row">The risk % (chance of a loss month)</th><td><span class="kind k-ml">Machine learning</span></td>
+            <td>Four models are trained and tested on past business-months; the one that tests best is used: now <b data-ev="best_name">…</b>. SHAP explains each prediction.</td></tr>
+          <tr><th scope="row">Your outlook, 1 to 12 months ahead</th><td><span class="kind k-ml">Machine learning</span></td>
+            <td>One LightGBM model for every horizon you can choose, agreeing with the 3-month risk check. SHAP explains the horizon you pick.</td></tr>
+          <tr><th scope="row">Financial distress check</th><td><span class="kind k-stat">Statistical model</span></td>
+            <td>A logistic regression: one equation with eight weights you can read, test and check with a calculator.</td></tr>
+          <tr><th scope="row">The "Ask" assistant (chat)</th><td><span class="kind k-rule">Rule-based</span></td>
+            <td>Matches your question to a topic (it copes with spelling mistakes and Kiswahili), then answers from your own figures, checks and formulas. No outside AI: it's free, and nothing you type leaves the app or is saved.</td></tr>
+          <tr><th scope="row">Early check before the model is trained</th><td><span class="kind k-rule">Rule-based</span></td>
+            <td>"The next 3 months will look like the last 3": a loss over the last 3 months means high risk.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="card how-sec" id="figures" aria-labelledby="h-fig">
+    <h2 id="h-fig">Your business figures</h2>
+    <p>Worked out from the figures you enter for each month. KES throughout.</p>
+    <dl class="formulas">
+      <div><dt>Gross profit</dt><dd>Total sales − cost of goods sold</dd></div>
+      <div><dt>Gross margin</dt><dd>Gross profit ÷ total sales × 100</dd></div>
+      <div><dt>Operating profit (profit or loss)</dt><dd>Gross profit − running expenses. Below zero is a <b>loss month</b>.</dd></div>
+      <div><dt>Net margin</dt><dd>Operating profit ÷ total sales × 100</dd></div>
+      <div><dt>Net cash flow (cash left over)</dt><dd>Money received − money paid out</dd></div>
+      <div><dt>Profit vs cash difference</dt><dd>Operating profit − net cash flow. Positive: money tied up in stock, credit sales or loan repayments.</dd></div>
+      <div><dt>Break-even sales</dt><dd>Running expenses ÷ gross margin: the sales you need to cover running costs</dd></div>
+      <div><dt>Margin of safety</dt><dd>(Total sales − break-even sales) ÷ total sales × 100</dd></div>
+      <div><dt>Sales received as money</dt><dd>Money received ÷ total sales × 100</dd></div>
+      <div><dt>Costs per 100 shillings of sales</dt><dd>(Cost of goods + running expenses) ÷ total sales × 100</dd></div>
+      <div><dt>Months of stock</dt><dd>Stock value at month end ÷ cost of goods sold</dd></div>
+      <div><dt>Money owed, in months of sales</dt><dd>Money owed ÷ total sales</dd></div>
+      <div><dt>Average sale</dt><dd>Total sales ÷ number of sales</dd></div>
+      <div><dt>M-Pesa share</dt><dd>Received by M-Pesa ÷ money received × 100</dd></div>
+    </dl>
+    <div id="my-figures" data-owner hidden>
+      <h3>With your numbers (<span id="my-month"></span>)</h3>
+      <ul class="worked-list" id="my-worked"></ul>
+    </div>
+    <p class="hint">Rule thresholds: gross margin below 15%, money received below 80% of sales, more than 3 months of stock,
+      and money owed above 2 months of sales are flagged. These are fixed rules, not predictions.</p>
+  </section>
+
+  <!-- 3 -->
+  <section class="card how-sec" id="risk" aria-labelledby="h-risk">
+    <h2 id="h-risk">The risk %: what it means and how it's worked out</h2>
+    <p class="big-def">The risk % is the chance that <b>at least one of your next 3 months is a loss month</b>
+      (operating profit below zero), based on your figures so far.</p>
+    <ol class="steps how-steps">
+      <li><b>Your figures become 20 signals.</b> For your latest month: margin this month and over 3 months, change in margin,
+        loss months among the last 3, sales and cost trends, cost and running-cost shares, cash left over, months with
+        more cash out than in, M-Pesa share, number-of-sales trend, money owed and its change, stock on hand, how long
+        you've kept records, time of year and type of business. Each uses only months up to now.</li>
+      <li><b>The model compares you with thousands of past business-months</b> whose next 3 months are known, and gives a
+        probability between 0 and 1. We show it as a %.</li>
+      <li><b>The % is calibrated.</b> The models give extra weight to the rarer loss months while learning, which
+        pushes their % up. A final correction (Platt scaling: chance = 1 ÷ (1 + e<sup>−(a × log-odds + b)</sup>)), fitted on
+        training months the model hadn't seen, brings the % back in line with how often losses really followed. It never
+        changes which business is riskier than which.</li>
+      <li><b>The % is put in a band:</b> Low below <span data-ev="band_mod">35</span>%, Moderate from
+        <span data-ev="band_mod">35</span>%, High from <span data-ev="band_high">60</span>%.</li>
+      <li><b>SHAP explains it.</b> SHAP splits the prediction into how much each signal pushed it up or down. The three
+        biggest "up" pushes are your main reasons; the biggest "down" pushes are what's working.</li>
+    </ol>
+    <p>How the model learned: each past business-month is labelled 1 if a loss followed within 3 months and 0 if not.
+      Months whose next 3 months aren't recorded yet are never used for learning.</p>
+    <div id="imp-wrap" hidden>
+      <h3>What the model relies on most</h3>
+      <p class="hint">Average size of each signal's push (mean |SHAP|) on the test months.</p>
+      <ul class="imp-bars" id="imp-bars"></ul>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="card how-sec" id="accuracy" aria-labelledby="h-acc">
+    <h2 id="h-acc">Is it accurate? The evidence</h2>
+    <p class="notice warn" id="no-model" hidden>The risk model hasn't been trained yet, so there are no test results to show.
+      Until then the dashboard uses the simple rule described above.</p>
+    <div id="acc" hidden>
+      <h3>A fair test: predicting months it had never seen</h3>
+      <p>The model learned from months <b data-ev="train_from">…</b> to <b data-ev="train_to">…</b>, then was tested on
+        <b data-ev="test_n">…</b> later business-months (<b data-ev="test_from">…</b> to <b data-ev="test_to">…</b>) from
+        <b data-ev="test_biz">…</b> businesses, before seeing what happened next. A 3-month gap between the two stops
+        the answers leaking into the learning.</p>
+
+      <div class="proof" id="band-proof"></div>
+
+      <h3>When we say a %, does it come true that often?</h3>
+      <p>This is called calibration. If the % is honest, of all the months we gave about 30%, about 30 in 100 should
+        have been followed by a loss. Bars side by side should be about the same height.</p>
+      <figure class="cal-fig">
+        <div class="cal-legend" aria-hidden="true"><span class="lg lg-pred">What we predicted (average)</span><span class="lg lg-act">What actually happened</span></div>
+        <div id="cal-chart" class="cal-chart"></div>
+        <figcaption class="sr">Predicted chance against the share of months actually followed by a loss, for each range of predictions. The table below has the same numbers.</figcaption>
+      </figure>
+      <details class="how-details"><summary>The numbers behind the chart</summary>
+        <div class="table-wrap"><table class="how-table" id="cal-table">
+          <thead><tr><th scope="col">We predicted</th><th scope="col">Months</th><th scope="col">Average prediction</th><th scope="col">Followed by a loss</th></tr></thead>
+          <tbody></tbody></table></div>
+      </details>
+
+      <h3>Compared with other models and a simple rule</h3>
+      <p>All four models and the simple rule were tested on the same months. The best by PR-AUC is used.</p>
+      <div class="table-wrap"><table class="how-table" id="model-table">
+        <thead><tr><th scope="col">Model</th><th scope="col">Catches losses<br><small>(recall)</small></th><th scope="col">Right when it warns<br><small>(precision)</small></th>
+          <th scope="col">PR-AUC</th><th scope="col">ROC-AUC</th><th scope="col">Brier<br><small>(lower is better)</small></th></tr></thead>
+        <tbody></tbody></table></div>
+      <dl class="glossary">
+        <div><dt>Catches losses (recall)</dt><dd>Of the months that were followed by a loss, the share the model warned about (at 50%).</dd></div>
+        <div><dt>Right when it warns (precision)</dt><dd>Of the months it warned about, the share that really were followed by a loss.</dd></div>
+        <div><dt>PR-AUC, ROC-AUC</dt><dd>How well it ranks risky months above safe ones, across every cut-off. 1 is perfect; 0.5 (ROC) is guessing.</dd></div>
+        <div><dt>Brier score</dt><dd>The average squared gap between the % and what happened (0 or 1). 0 is perfect.</dd></div>
+      </dl>
+      <p class="callout" id="confusion-text"></p>
+
+      <h3>Honest limits</h3>
+      <ul class="limits">
+        <li id="synthetic-note"></li>
+        <li>It predicts from your records only. A road closure, a new competitor or a family emergency isn't in the figures.</li>
+        <li>Wrong or missing months make the check less reliable. 12 months or more with no gaps gives the best result.</li>
+        <li>It is decision support, not a guarantee, and it is not a credit score.</li>
+      </ul>
+      <p class="hint" id="trained-at"></p>
+    </div>
+  </section>
+
+  <!-- 4b -->
+  <section class="card how-sec" id="outlook" aria-labelledby="h-ol">
+    <h2 id="h-ol">Looking 1 to 12 months ahead (your outlook)</h2>
+    <p>On the dashboard you choose how far ahead to look, from 1 to 12 months. The outlook is the chance of
+      <b>at least one loss month</b> between now and the month you chose. Looking 3 months ahead is the same question as the main risk check.</p>
+    <ol class="steps how-steps">
+      <li><b>One model for every horizon.</b> Each past business-month is used once for every horizon whose months are all recorded
+        (1 month ahead, 2 months ahead … 12), with the horizon as an extra input. One model learns them all, which uses the data far better than twelve separate models.</li>
+      <li><b>It can only go up.</b> A loss within 3 months is also a loss within 6, so the model is told the chance may only rise with the horizon (a monotone constraint), and the bars on the dashboard never go down.</li>
+      <li><b>It agrees with the risk check.</b> The whole curve is shifted (on the log-odds scale) so its 3-month point equals the main risk check: logit(p<sub>h</sub>) = logit(q<sub>h</sub>) + logit(p<sub>3, main</sub>) − logit(q<sub>3</sub>). The shift is the same for every horizon, so the order stays the same.</li>
+      <li><b>Reasons for your choice.</b> SHAP explains the prediction for the horizon you picked, so the reasons can differ: this month's cash matters more 1 month ahead, trends and debt more 12 months ahead.</li>
+      <li><b>Warnings.</b> If you choose a horizon other than 3 months, you also get an alert when that outlook goes up a band, and the monthly email includes it.</li>
+    </ol>
+    <p class="notice warn" id="ol-none" hidden>The outlook model hasn't been trained yet.</p>
+    <div id="ol-ev" hidden>
+      <h3>How well it tested, horizon by horizon</h3>
+      <p class="hint" id="ol-ev-intro"></p>
+      <div class="table-wrap"><table class="how-table" id="ol-table">
+        <thead><tr><th scope="col">Months ahead</th><th scope="col">Test months</th><th scope="col">Had a loss</th><th scope="col">ROC-AUC</th>
+          <th scope="col">Brier</th><th scope="col">Rated High: had a loss</th><th scope="col">Rated Low: had a loss</th></tr></thead>
+        <tbody></tbody></table></div>
+      <p class="hint">The further ahead, the more businesses have a loss somewhere in the window, and the less sharp the prediction (ROC-AUC falls, the Brier score rises).
+        Long horizons have fewer test months, because a month only counts once all the months after it are recorded.</p>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="card how-sec" id="distress" aria-labelledby="h-ds">
+    <h2 id="h-ds">The financial distress model (logistic regression)</h2>
+    <p><b>What it predicts:</b> the chance that over the next 3 months <b>more money goes out than comes in</b> (a cash
+      shortfall), or <b>money owed rises by more than half a month's sales</b>. A business can make a profit and still
+      run short of cash, so this complements the loss risk.</p>
+    <p><b>The equation.</b> Each of your eight figures is standardised against the average business,
+      z = (your value − average) ÷ spread, then:</p>
+    <p class="equation">log-odds = b<sub>0</sub> + b<sub>1</sub>z<sub>1</sub> + b<sub>2</sub>z<sub>2</sub> + … + b<sub>8</sub>z<sub>8</sub>
+      <br>chance = 1 ÷ (1 + e<sup>−log-odds</sup>)</p>
+    <p>The weights (b) are fitted by maximum likelihood with no penalty and no class weights, so the chances aren't pushed
+      up or down. The dashboard shows the whole sum for your business under "See the full calculation".</p>
+    <p class="notice warn" id="ds-none" hidden>The distress model hasn't been trained yet.</p>
+    <div id="ds-ev" hidden>
+      <h3>The fitted weights</h3>
+      <p class="hint">Odds ratio = e<sup>b</sup>: how the odds of distress change when that figure is one spread (one standard
+        deviation) higher. Above 1 raises the chance, below 1 lowers it. A p-value under 0.05 means the effect is very
+        unlikely to be chance.</p>
+      <div class="table-wrap"><table class="how-table" id="coef-table">
+        <thead><tr><th scope="col">Figure</th><th scope="col">Weight b</th><th scope="col">Std. error</th><th scope="col">Odds ratio</th><th scope="col">95% range</th><th scope="col">p-value</th></tr></thead>
+        <tbody></tbody></table></div>
+      <h3>How well it fits and tests</h3>
+      <dl class="stat-grid" id="ds-stats"></dl>
+      <p class="hint" id="ds-hl"></p>
+      <p class="hint" id="ds-notes"></p>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="card how-sec" id="yours" aria-labelledby="h-yours" data-owner hidden>
+    <h2 id="h-yours">Your track record</h2>
+    <p>Each risk check you were given, set against what actually happened in the 3 months after it. A check counts once
+      all 3 of those months are recorded.</p>
+    <p class="callout" id="tr-sum"></p>
+    <div class="table-wrap" id="tr-wrap" hidden><table class="how-table" id="tr-table">
+      <thead><tr><th scope="col">Check for</th><th scope="col">We said</th><th scope="col">What happened next</th><th scope="col">Verdict</th></tr></thead>
+      <tbody></tbody></table></div>
+  </section>
+
+  <!-- 7 -->
+  <section class="card how-sec" id="privacy" aria-labelledby="h-priv">
+    <h2 id="h-priv">Your data and privacy</h2>
+    <p>Biashara Check follows Kenya's Data Protection Act, 2019.</p>
+    <div class="two-col">
+      <div>
+        <h3>What we keep</h3>
+        <ul>
+          <li>Your business code (like SME-001), type of business and the monthly figures you enter.</li>
+          <li>Your email and mobile number, <b>encrypted</b>, stored apart from your figures, and used only for your account, codes and the messages you switch on.</li>
+          <li>Your password, only as a one-way hash that nobody can read back.</li>
+          <li>An activity log: logins, changes to figures and admin actions, so every change can be traced.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>What we never keep</h3>
+        <ul>
+          <li>Your name, ID number or business name.</li>
+          <li>Your M-Pesa statement: it's read once for monthly totals and thrown away, with its password. No names, numbers or receipts are stored.</li>
+          <li>Card or bank details. Biashara Pro is paid by M-Pesa on your phone.</li>
+        </ul>
+      </div>
+    </div>
+    <h3>Who can see it</h3>
+    <ul>
+      <li>You see only your own business. Other owners can never see it.</li>
+      <li>The study team (admins) can see figures by business code. Your email and phone are hidden; showing one is recorded in the activity log.</li>
+      <li>Nothing is shared with lenders, SACCOs or anyone else. Reports leave the app only when you download or email them to your own confirmed email.</li>
+      <li>The risk models learn patterns from all businesses together, by code only. They keep weights and patterns, not copies of anyone's monthly records.</li>
+    </ul>
+    <h3>Your rights</h3>
+    <ul>
+      <li>Download all your figures as a CSV from the Account page (Delete account tab), whether or not you delete.</li>
+      <li>Correct any month (Edit on the dashboard).</li>
+      <li>Delete your account: your business, every month, your login and your contact details are erased for good.</li>
+      <li>Change your username and password, and switch messages off, on the <a href="/account">Account</a> page.</li>
+    </ul>
+    <h3>How it's protected</h3>
+    <ul>
+      <li>Passwords hashed with scrypt and a random salt. Logins end after 12 hours, and changing your password logs out every other device.</li>
+      <li>Five wrong passwords lock that login for 10 minutes.</li>
+      <li>Email and phone encrypted at rest (Fernet, AES); looked up by a keyed hash.</li>
+      <li>One-time codes stored only as hashes, expiring after 15 minutes.</li>
+    </ul>
+  </section>
+
+  <!-- 8 -->
+  <section class="card how-sec" id="integrity" aria-labelledby="h-int">
+    <h2 id="h-int">Data integrity: keeping the figures right</h2>
+    <ul>
+      <li><b>Checks when you type:</b> no negative amounts, no future months, one record per month, and warnings for
+        likely typing mistakes (sales 3 times last month's, costs far above sales, M-Pesa above all money received…).
+        You confirm before such a month is saved.</li>
+      <li><b>Checks when you upload:</b> every row is shown to you before anything is saved, and months already saved are
+        never overwritten unless you choose to replace them.</li>
+      <li><b>Every change is logged:</b> each month added, edited, deleted or uploaded is written to the activity log with
+        who and when.</li>
+      <li><b>Every prediction is stamped</b> with the model version that made it, and kept, so past checks can be compared
+        with what happened.</li>
+      <li><b>Fingerprint:</b> a SHA-256 code made from all your figures. Change any figure by even one shilling and the
+        fingerprint changes completely, so a report can be matched to the records it came from.</li>
+    </ul>
+    <div id="my-integrity" data-owner hidden>
+      <h3>Your records now</h3>
+      <dl class="stat-grid" id="int-stats"></dl>
+      <div id="int-flags"></div>
+      <p class="fp-row"><span>Fingerprint</span><code id="int-fp"></code></p>
+    </div>
+  </section>
+</main>
+<script src="/static/how.js"></script>
+<script src="/static/assistant.js"></script>
+<script src="/static/i18n.js"></script>
+<script src="/static/pwa.js"></script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your account: Biashara Check</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230F3D2E'/%3E%3Crect x='5' y='10' width='3.2' height='9' rx='1' fill='%23fff'/%3E%3Crect x='10.4' y='5' width='3.2' height='14' rx='1' fill='%23fff'/%3E%3Crect x='15.8' y='12.5' width='3.2' height='6.5' rx='1' fill='%23F0B429'/%3E%3C/svg%3E">
+<link rel="preload" href="/static/fonts/bricolage-grotesque-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/static/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials">
+<link rel="apple-touch-icon" href="/static/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0F3D2E">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="/"><svg class="mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="24" height="24" rx="6" fill="#0F3D2E"/><rect x="5" y="10" width="3.2" height="9" rx="1" fill="#fff"/><rect x="10.4" y="5" width="3.2" height="14" rx="1" fill="#fff"/><rect x="15.8" y="12.5" width="3.2" height="6.5" rx="1" fill="#F0B429"/></svg><span>Biashara Check</span></a>
+    <nav class="nav" aria-label="Account">
+      <a class="nav-link" id="home-link" href="/">Dashboard</a>
+      <a class="nav-link" href="/how"><span class="wide-only">How it's calculated</span><span class="narrow-only">Method</span></a>
+      <a class="nav-link" href="/install"><span class="wide-only">Get the app</span><span class="narrow-only">App</span></a>
+      <a class="nav-link" href="/account" aria-current="page">Account</a>
+      <button class="nav-link" id="logout" type="button">Log out</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap acct-page" id="account" hidden>
+  <h1>Your account</h1>
+  <p class="lede" id="who"></p>
+
+  <div class="notice warn" id="must-change" hidden>
+    <p><b>Choose your own password.</b> You logged in with a temporary password from the study team. Replace it before you carry on.</p>
+  </div>
+
+
+
+
+
+
+  <div class="acct">
+    <nav class="acct-nav" aria-label="Account sections" role="tablist">
+      <button type="button" role="tab" data-tab="profile" id="tab-profile">Contact and messages</button>
+      <button type="button" role="tab" data-tab="pro" id="tab-pro">Biashara Pro</button>
+      <button type="button" role="tab" data-tab="security" id="tab-security">Username and password</button>
+      <button type="button" role="tab" data-tab="feedback" id="tab-feedback">Give feedback</button>
+      <button type="button" role="tab" data-tab="delete" id="tab-delete" class="danger-tab">Delete account</button>
+    </nav>
+    <div class="acct-body">
+    <div class="acct-panel" role="tabpanel" data-panel="profile" aria-labelledby="tab-profile">
+    <section class="card form" id="contact" aria-labelledby="ct-h">
+      <h2 id="ct-h">Contact details</h2>
+      <p class="hint">Used to confirm your account and reset your password. Stored encrypted, kept apart from your business figures, and never shared.</p>
+      <dl class="contact-list" id="ct-list"></dl>
+
+      <form class="form" id="ct-verify" hidden novalidate>
+        <div class="field">
+          <label for="ct-code">Code from the email</label>
+          <div class="verify-row">
+            <input id="ct-code" inputmode="numeric" autocomplete="one-time-code" maxlength="7" placeholder="123456">
+            <button class="btn primary small" type="submit">Confirm email</button>
+            <button class="link-btn" type="button" id="ct-resend">Send a new code</button>
+          </div>
+        </div>
+        <p class="msg" role="status"></p>
+      </form>
+
+      <form class="form" id="ct-phone-verify" hidden novalidate>
+        <div class="field">
+          <span class="field-label">Confirm your mobile number by SMS</span>
+          <div class="verify-row">
+            <button class="btn ghost small" type="button" id="ct-phone-send">Text me a code</button>
+            <span class="verify-row" id="ct-phone-code-wrap" hidden>
+              <label class="sr" for="ct-phone-code">Code from the SMS</label>
+              <input id="ct-phone-code" inputmode="numeric" autocomplete="one-time-code" maxlength="7" placeholder="123456">
+              <button class="btn primary small" type="submit">Confirm number</button>
+            </span>
+          </div>
+        </div>
+        <p class="msg" role="status"></p>
+      </form>
+
+      <details id="ct-edit-wrap">
+        <summary id="ct-edit-label">Change email or mobile number</summary>
+        <form class="form ct-edit" id="ct-form" novalidate>
+          <div class="field"><label for="ct-email">Email</label><input id="ct-email" name="email" type="email" autocomplete="email" placeholder="name@gmail.com"></div>
+          <div class="field"><label for="ct-phone">Mobile number</label><input id="ct-phone" name="phone" type="tel" autocomplete="tel" placeholder="0712 345 678"></div>
+          <div class="field">
+            <label for="ct-pass">Your password</label>
+            <input id="ct-pass" name="password" type="password" autocomplete="current-password">
+            <small>So nobody using your phone can change these without knowing it.</small>
+          </div>
+          <button class="btn primary" type="submit">Save contact details</button>
+          <p class="msg" role="status"></p>
+        </form>
+      </details>
+    </section>
+    <section class="card form" id="notify" aria-labelledby="nt-h" hidden>
+      <h2 id="nt-h">Messages from Biashara Check</h2>
+      <p class="hint">Sent to your confirmed email, and by SMS to your confirmed mobile number.</p>
+      <label class="toggle"><input type="checkbox" id="nt-reports"><span><b>Monthly report</b><small>Email me my report as a PDF when I add a month</small></span></label>
+      <label class="toggle"><input type="checkbox" id="nt-reminders"><span><b>Reminders</b><small>Remind me early each month to add last month's figures</small></span></label>
+      <label class="toggle"><input type="checkbox" id="nt-alerts"><span><b>Risk alerts</b><small>Tell me straight away if my risk of a loss goes up</small></span></label>
+      <div class="field lang-field"><label for="nt-lang">Language</label>
+        <select id="nt-lang" data-no-i18n><option value="en">English</option><option value="sw">Kiswahili</option></select></div>
+      <p class="msg" role="status" id="nt-msg"></p>
+    </section>
+    </div>
+    <div class="acct-panel" role="tabpanel" data-panel="pro" aria-labelledby="tab-pro" hidden>
+    <section class="card pro-card" id="pro" aria-labelledby="pro-h" hidden>
+      <div class="card-head row">
+        <h2 id="pro-h">Biashara Pro</h2>
+        <span id="pro-badge"></span>
+      </div>
+      <div class="pro-term" id="pro-term" hidden>
+        <div class="pro-until">
+          <span class="pt-label" id="pt-label">Pro is active until</span>
+          <time id="pro-until"></time>
+          <span class="pro-count" id="pro-count" aria-live="off"></span>
+        </div>
+        <p class="pt-plan" id="pt-plan"></p>
+        <div class="renew-box" id="renew-box"></div>
+      </div>
+      <p class="pro-state" id="pro-state"></p>
+      <ul class="pro-features" id="pro-features"></ul>
+      <div class="notice warn pro-mode" id="pro-mode" hidden></div>
+
+      <form class="form" id="pay-form" novalidate>
+        <fieldset class="segmented plans" id="plans">
+          <legend class="field-label">Choose a plan</legend>
+        </fieldset>
+        <div class="field">
+          <label for="pay-phone">M-Pesa number to pay from</label>
+          <input id="pay-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0712 345 678" required>
+          <small>You'll get a prompt on this phone. Enter your M-Pesa PIN there. We never see your PIN.</small>
+        </div>
+        <label class="consent renew-opt"><input type="checkbox" id="pay-renew" checked>
+          <span><b>Renew automatically when this plan ends</b>
+            <small>A day before Pro ends we send an M-Pesa prompt for the same plan. Nothing is paid unless you enter your PIN, and you can cancel any time.</small></span></label>
+        <button class="btn primary mpesa-btn" type="submit" id="pay-btn">Pay with M-Pesa</button>
+        <div class="pay-wait" id="pay-wait" hidden role="status" aria-live="polite">
+          <span class="spinner" aria-hidden="true"></span>
+          <div><b id="wait-title">Check your phone</b><p id="wait-text"></p></div>
+        </div>
+        <p class="msg" role="status" id="pay-msg"></p>
+      </form>
+
+      <details class="pay-history" id="pay-history" hidden>
+        <summary>Your payments</summary>
+        <ul id="pay-list"></ul>
+      </details>
+    </section>
+    </div>
+    <div class="acct-panel acct-grid" role="tabpanel" data-panel="security" aria-labelledby="tab-security" hidden>
+    <form class="card form" id="un-form" novalidate>
+      <h2>Username</h2>
+      <p class="hint">Your username now: <b id="un-now"></b>. <span id="un-also"></span></p>
+      <div class="field">
+        <label for="un-new">New username</label>
+        <input id="un-new" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="30" required>
+        <small>3 to 30 letters, numbers, dots, dashes or underscores. Don't use your real name, phone or ID number: the study team can see usernames.</small>
+      </div>
+      <div class="field">
+        <label for="un-pass">Current password</label>
+        <input id="un-pass" name="password" type="password" autocomplete="current-password" required>
+      </div>
+      <button class="btn primary" type="submit">Change username</button>
+      <p class="msg" role="status"></p>
+    </form>
+    <form class="card form" id="pw-form" novalidate>
+      <h2>Change password</h2>
+      <div class="field">
+        <label for="cur">Current password</label>
+        <div class="pw">
+          <input id="cur" name="current" type="password" autocomplete="current-password" required>
+          <button class="pw-toggle" type="button" aria-controls="cur" aria-pressed="false">Show</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="new1">New password</label>
+        <div class="pw">
+          <input id="new1" name="new1" type="password" autocomplete="new-password" minlength="8" required>
+          <button class="pw-toggle" type="button" aria-controls="new1" aria-pressed="false">Show</button>
+        </div>
+        <small>At least 8 characters. A short phrase like chai-na-mandazi-26 is easy to remember.</small>
+      </div>
+      <div class="field">
+        <label for="new2">Type the new password again</label>
+        <input id="new2" name="new2" type="password" autocomplete="new-password" required>
+      </div>
+      <button class="btn primary" type="submit">Change password</button>
+      <p class="msg" role="status"></p>
+    </form>
+    <section class="card form" aria-labelledby="rc-h">
+      <h2 id="rc-h">Recovery code</h2>
+      <p class="hint">If you forget your password, your business code and recovery code let you set a new one on the login page. Making a new code stops the old one from working.</p>
+      <button class="btn ghost" type="button" id="rc-btn">Make a new recovery code</button>
+      <div id="rc-out" hidden></div>
+    </section>
+    </div>
+    <div class="acct-panel" role="tabpanel" data-panel="feedback" aria-labelledby="tab-feedback" hidden>
+    <form class="card form" id="feedback" aria-labelledby="fb-h" novalidate hidden>
+      <h2 id="fb-h">Rate Biashara Check</h2>
+      <p class="hint">For the research study. Choose from 1 (strongly disagree) to 5 (strongly agree). Skip any that don't apply.</p>
+      <div id="fb-questions" class="fb-questions"></div>
+      <div class="fb-open">
+        <div class="field"><label for="fb-liked">What did you like most?</label><textarea id="fb-liked" rows="2" maxlength="1000"></textarea></div>
+      <div class="field"><label for="fb-confusing">What was confusing?</label><textarea id="fb-confusing" rows="2" maxlength="1000"></textarea></div>
+      <div class="field"><label for="fb-wish">What would you add?</label><textarea id="fb-wish" rows="2" maxlength="1000"></textarea></div>
+      </div>
+      <button class="btn primary" type="submit">Send feedback</button>
+      <p class="msg" role="status"></p>
+    </form>
+    </div>
+    <div class="acct-panel" role="tabpanel" data-panel="delete" aria-labelledby="tab-delete" hidden>
+    <form class="card form danger-zone" id="del-form" novalidate aria-labelledby="del-h">
+      <h2 id="del-h">Delete my account</h2>
+      <p>This permanently erases <b id="del-what">your business, every month of figures</b>, your login, and your email and phone number. It can't be undone.</p>
+      <p class="hint" id="del-download-wrap">Want a copy first? <a id="del-download" href="#" download>Download my figures (CSV)</a>. You can upload that file again if you ever come back.</p>
+      <details id="del-open">
+        <summary>I want to delete my account</summary>
+        <div class="form del-body">
+          <div class="field">
+            <label for="del-pass">Your password</label>
+            <input id="del-pass" name="password" type="password" autocomplete="current-password">
+          </div>
+          <div class="field">
+            <label for="del-confirm">Type <b id="del-name"></b> to confirm</label>
+            <input id="del-confirm" name="confirm" autocomplete="off" autocapitalize="characters" spellcheck="false">
+          </div>
+          <button class="btn danger" type="submit" id="del-btn" disabled>Delete my account for good</button>
+          <p class="msg" role="status"></p>
+        </div>
+      </details>
+    </form>
+    </div>
+    </div>
+  </div>
+</main>
+
+<script src="/static/account.js"></script>
+<script src="/static/i18n.js"></script>
+<script src="/static/pwa.js"></script>
+</body>
+</html>
